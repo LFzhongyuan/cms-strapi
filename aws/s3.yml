@@ -1,0 +1,49 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: 'CloudFormation template for Strapi S3 bucket'
+
+Parameters:
+  Environment:
+    Type: String
+    Default: dev
+    AllowedValues:
+      - dev
+      - staging
+      - prod
+    Description: Environment name
+
+Resources:
+  StrapiS3Bucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName: !Sub strapi5-test-${Environment}
+      PublicAccessBlockConfiguration:
+        BlockPublicAcls: true
+        BlockPublicPolicy: true
+        IgnorePublicAcls: true
+        RestrictPublicBuckets: true
+      VersioningConfiguration:
+        Status: Enabled
+
+  StrapiS3BucketPolicy:
+    Type: AWS::S3::BucketPolicy
+    Properties:
+      Bucket: !Ref StrapiS3Bucket
+      PolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: cloudfront.amazonaws.com
+            Action: s3:GetObject
+            Resource: !Sub ${StrapiS3Bucket.Arn}/*
+            Condition:
+              StringEquals:
+                AWS:SourceArn: !Sub arn:aws:cloudfront::${AWS::AccountId}:distribution/*
+
+Outputs:
+  BucketName:
+    Description: Name of the S3 bucket
+    Value: !Ref StrapiS3Bucket
+  BucketArn:
+    Description: ARN of the S3 bucket
+    Value: !GetAtt StrapiS3Bucket.Arn
