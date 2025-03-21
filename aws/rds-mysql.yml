@@ -16,14 +16,16 @@ Parameters:
     Description: The database instance type
   DBName:
     Type: String
-    Default: strapi
+    Default: strapi5
     Description: The name of the database
   DBUsername:
     Type: String
+    Default: strapi5
     Description: Username for the database
   DBPassword:
     Type: String
     NoEcho: true
+    Default: strapi5_pw
     Description: Password for the database
 
 Resources:
@@ -49,7 +51,7 @@ Resources:
   DBInstance:
     Type: AWS::RDS::DBInstance
     Properties:
-      DBInstanceIdentifier: !Sub strapi-mysql-${Environment}
+      DBInstanceIdentifier: !Sub strapi5-mysql-${Environment}
       Engine: mysql
       EngineVersion: 8.0
       DBInstanceClass: !Ref DBInstanceClass

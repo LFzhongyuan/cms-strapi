@@ -15,7 +15,7 @@ Resources:
   StrapiS3Bucket:
     Type: AWS::S3::Bucket
     Properties:
-      BucketName: !Sub strapi5-test-${Environment}
+      BucketName: !Sub strapi5-${Environment}
       PublicAccessBlockConfiguration:
         BlockPublicAcls: true
         BlockPublicPolicy: true
