@@ -36,6 +36,9 @@ resources:
         Memory: '512'
         ExecutionRoleArn: !GetAtt ExecutionRole.Arn
         TaskRoleArn: !GetAtt TaskRole.Arn
+        RuntimePlatform:
+          OperatingSystemFamily: LINUX
+          CpuArchitecture: X86_64
         ContainerDefinitions:
           - Name: strapi-container
             Image: 767397774598.dkr.ecr.ap-southeast-1.amazonaws.com/cms-strapi-dev:latest
@@ -43,7 +46,7 @@ resources:
               - ContainerPort: 1337
             Environment:
               - Name: NODE_ENV
-                Value: production
+                Value: dev
 
     ExecutionRole:
       Type: AWS::IAM::Role
