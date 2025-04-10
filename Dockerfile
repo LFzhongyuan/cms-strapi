@@ -1,20 +1,19 @@
-FROM --platform=linux/amd64 node:18-alpine
+FROM node:18-alpine
 
 WORKDIR /app
 
+# 先复制 package.json 和 package-lock.json
 COPY package*.json ./
 
-# 删除可能存在的不兼容的 node_modules 目录
-RUN rm -rf node_modules
+# 安装依赖
+RUN npm install --production
 
-# 确保目录可写
-RUN chown -R node:node /app
-
-USER node
-
-RUN npm install
-
+# 复制项目其他文件
 COPY . .
+
+# 构建 Strapi 项目
 RUN npm run build
+
 EXPOSE 1337
+
 CMD ["npm", "run", "start"]
